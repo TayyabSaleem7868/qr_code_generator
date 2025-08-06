@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Code Generator</title>
+
+  <!-- Google Font for Title -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            'rubik-mono': ['"Rubik Mono One"', 'sans-serif'],
+          },
+          colors: {
+            background: {
+              light: '#f1f5f9',
+              dark: '#0f172a',
+            },
+            card: {
+              light: 'rgba(255, 255, 255, 0.75)',
+              dark: 'rgba(255, 255, 255, 0.1)',
+            }
+          },
+          boxShadow: {
+            glow: '0 0 20px rgba(0, 191, 255, 0.6)',
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Icon CDN -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .glass {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .bg-animated {
+      background: linear-gradient(-45deg, #0f172a, #1e293b, #334155, #0ea5e9);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+        <!-- Icons -->
+    <link rel="icon" href="./logo.jpg" type="jpg">
+    <link rel="shortcut icon" href="./logo.jpg" type="jpg">
+    <link rel="apple-touch-icon" href="./logo.jpg">
+</head>
+<body class="relative min-h-screen flex items-center justify-center px-4 text-gray-800 bg-background-light dark:bg-background-dark transition-colors duration-500">
+
+  <!-- Background animation -->
+  <div class="absolute inset-0 bg-animated z-0"></div>
+
+  <!-- Main Container -->
+  <div class="glass p-8 rounded-2xl border w-full max-w-md text-center relative z-10
+              bg-card-light dark:bg-card-dark text-black dark:text-white border-black/10 dark:border-white/10 shadow-md dark:shadow-glow transition-all duration-300">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-2xl font-rubik-mono">QR CODE GENERATOR</h1>
+    </div>
+
+    <!-- Input -->
+    <input
+      id="text-input"
+      type="text"
+      placeholder="Enter text or URL"
+      class="w-full px-4 py-2 mb-4 rounded-lg bg-white/80 dark:bg-white/10 backdrop-blur-md border border-gray-300 dark:border-white/20 placeholder-gray-600 dark:placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+    />
+
+    <!-- Button -->
+    <button
+      onclick="generateQRCode()"
+      class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-all hover:scale-105 shadow-md"
+    >
+      Generate QR
+    </button>
+
+    <!-- Output -->
+    <div id="qr-code" class="mt-6 hidden">
+      <img id="qr-img" class="mx-auto w-48 h-48 rounded-lg shadow-xl animate-float" src="" alt="QR Code" />
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    function generateQRCode() {
+      const input = document.getElementById("text-input").value.trim();
+      const img = document.getElementById("qr-img");
+      const wrapper = document.getElementById("qr-code");
+
+      if (input === "") {
+        alert("Please enter any URL or Text.");
+        return;
+      }
+
+      img.src = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(input)}&size=200x200`;
+      wrapper.classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>
